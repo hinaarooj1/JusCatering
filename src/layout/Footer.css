@@ -1,0 +1,21 @@
+.flex.jus {
+    justify-content: space-between;
+}
+
+.jus p {
+    text-transform: uppercase;
+    margin: 0;
+}
+
+.max-fot {
+    max-width: 300px;
+}
+
+@media (max-width:768px) {
+    .flex.jus {
+        flex-direction: column;
+        text-align: center;
+        padding-block: 40px;
+    }
+
+}

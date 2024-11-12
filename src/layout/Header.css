@@ -1,0 +1,154 @@
+.left-logo img {
+    width: 150px;
+
+}
+
+.main-header .max-width {
+
+    height: 100px;
+}
+
+.main-header {
+    /* background-color: aqua; */
+}
+
+.right-links ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+
+    gap: 30px;
+}
+
+.right-links ul li {
+
+    list-style: none
+}
+
+.right-links ul li a {
+    color: black;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+/* Dropdown styles */
+.menu-dropdown .dropdown-content {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: -20px;
+
+    background-color: white;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    min-width: 150px;
+    padding: 10px 0;
+    z-index: 99;
+
+}
+
+.menu-dropdown {
+    position: relative;
+    transition: all 0.3s ease-in-out;
+}
+
+.menu-dropdown i {
+    transition: all 0.3s ease-in-out;
+
+}
+
+.menu-dropdown:hover i {
+    transform: rotate(180deg);
+    transition: all 0.3s ease-in-out;
+}
+
+.menu-dropdown:hover .dropdown-content {
+    transition: all 0.3s ease-in-out;
+    display: block !important;
+}
+
+.dropdown-content li {
+    padding: 10px 20px;
+}
+
+.dropdown-content li a {
+    text-decoration: none;
+    color: #333;
+    display: block;
+}
+
+.dropdown-content li a:hover {
+    color: #59ada1;
+}
+
+.hamburger {
+    display: none;
+    cursor: pointer;
+    font-size: 1.5em;
+}
+
+.right-links {
+    display: flex;
+    transition: max-height 0.3s ease-out;
+}
+
+.right-links.open {
+    display: block;
+    max-height: 100vh;
+}
+
+@media (max-width: 768px) {
+    .right-links {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        right: 0;
+        width: 100%;
+        z-index: 999;
+        background-color: #fff;
+        /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); */
+        max-height: 0;
+        overflow: hidden;
+    }
+
+    .left-logo img {
+        width: 100px;
+    }
+
+    .right-links.open {
+        display: block;
+        max-height: 500px;
+        /* Adjust as needed */
+        animation: slideDown 0.3s ease-out;
+    }
+
+    .hamburger {
+        display: block;
+    }
+
+    .right-links ul {
+        flex-direction: column;
+        gap: 0;
+    }
+
+    .right-links li {
+        padding: 10px 20px;
+    }
+
+    .dropdown-content {
+        position: static;
+        box-shadow: none;
+        padding-left: 20px;
+    }
+}
+
+/* Slide-down animation */
+@keyframes slideDown {
+    from {
+        max-height: 0;
+    }
+
+    to {
+        max-height: 500px;
+    }
+}

@@ -1,0 +1,95 @@
+ .gallery {
+     display: grid;
+     gap: 10px;
+     grid-template-columns: repeat(3, 1fr);
+     /* max-width: 1000px; */
+     margin: auto;
+     margin-top: 20px;
+     padding-bottom: 50px;
+ }
+
+ .tile {
+     overflow: hidden;
+     border-radius: 5px;
+     position: relative;
+ }
+
+ .tile img {
+     width: 100%;
+     height: 100%;
+     transition: all 0.3s ease;
+     object-fit: cover;
+ }
+
+ .tile.large {
+     grid-column: span 2;
+     grid-row: span 2;
+ }
+
+ .tile:hover img {
+     transform: scale(1.1);
+     transition: all 0.3s ease;
+     /* Zoom effect on image hover */
+ }
+
+ .tile .overlay {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background-color: rgba(0, 0, 0, 0.5);
+     /* Semi-transparent overlay */
+     color: #fff;
+     display: flex;
+     flex-direction: column;
+     align-items: center;
+     justify-content: center;
+     opacity: 0;
+     transition: opacity 0.3s;
+     padding: 20px;
+     text-align: center;
+     text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.7);
+     /* Shadow effect for text */
+ }
+
+ .tile:hover .overlay {
+     opacity: 1;
+     /* Show overlay on hover */
+ }
+
+ .overlay h2 {
+     font-size: 1.5em;
+     margin-bottom: 10px;
+ }
+
+ .overlay p {
+     font-size: 1em;
+ }
+
+ @media (max-width: 768px) {
+     .gallery {
+         grid-template-columns: 1fr;
+     }
+
+     .tile {
+         grid-column: span 2;
+         grid-row: span 2;
+     }
+
+     .tile .overlay p {
+         opacity: 0;
+         display: none;
+     }
+
+     .tile:hover .overlay p {
+         display: block;
+         opacity: 1;
+     }
+
+     .tile .overlay {
+         padding: 0;
+         opacity: 1;
+         background-color: #0000001f
+     }
+ }
