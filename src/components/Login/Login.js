@@ -149,7 +149,7 @@ const Login = () => {
                         placeholder="Type Your Email Address" />
 
                     {errors.email && <div className="text-danger txtp fs-12">{errors.email}</div>}
-                    <div style={{ position: "relative" }}>
+                    <div style={{ position: "relative", marginTop: "10px" }}>
                         <label htmlFor="phone">Password</label>
                         <input type={type1}
                             className="form-control"
