@@ -66,6 +66,8 @@
  @media (max-width: 768px) {
      .flex-two {
          flex-direction: column;
+         gap: 0;
+         margin-bottom: 0;
      }
 
      .each-diva {
