@@ -58,3 +58,18 @@
  .eye.style-1 {
      left: 25px;
  }
+
+ .contact-form input, .contact-form textarea {
+     box-sizing: border-box;
+ }
+
+ @media (max-width: 768px) {
+     .flex-two {
+         flex-direction: column;
+     }
+
+     .each-diva {
+         width: 100%;
+     }
+
+ }

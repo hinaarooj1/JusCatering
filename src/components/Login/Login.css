@@ -11,8 +11,10 @@
     padding: 50px 20px;
 }
 
+
 .lea input {
     margin-bottom: 5px !important;
+    box-sizing: border-box;
 }
 
 .lea {

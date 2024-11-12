@@ -149,22 +149,24 @@ const Login = () => {
                         placeholder="Type Your Email Address" />
 
                     {errors.email && <div className="text-danger txtp fs-12">{errors.email}</div>}
-                    <label htmlFor="phone">Password</label>
-                    <input type={type1}
-                        className="form-control"
-                        value={password}
-                        placeholder="Type Your Password"
-                        onChange={(e) =>
-                            setPassword(e.target.value)
-                        } />
-                    <span onClick={handleTogglePassword} className="show-pass   eye">
-                        {type1 === "password" ? (
-                            <i className="fa fa-eye-slash" />
-                        ) : (
-                            <i className="fa fa-eye" />
-                        )}
+                    <div style={{ position: "relative" }}>
+                        <label htmlFor="phone">Password</label>
+                        <input type={type1}
+                            className="form-control"
+                            value={password}
+                            placeholder="Type Your Password"
+                            onChange={(e) =>
+                                setPassword(e.target.value)
+                            } />
+                        <span onClick={handleTogglePassword} className="show-pass   eye">
+                            {type1 === "password" ? (
+                                <i className="fa fa-eye-slash" />
+                            ) : (
+                                <i className="fa fa-eye" />
+                            )}
 
-                    </span>
+                        </span>
+                    </div>
                     {errors.password && <div className="text-danger txtp fs-12">{errors.password}</div>}
 
                     <br />
