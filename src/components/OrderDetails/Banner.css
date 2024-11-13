@@ -314,3 +314,14 @@ textarea {
     }
 
 }
+
+@media (max-width:400px) {
+    .menu-category {
+        width: 100%;
+    }
+
+    .menu-grid {
+        justify-content: start;
+    }
+
+}
