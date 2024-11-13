@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interstellar Integrity Electronic Board Game</title>
+    <style>
+        /* Main Styles */
+        @font-face {
+            font-family: 'SpaceColony';
+            src: url('https://start.ethicallyhacking.space/fonts/SpaceColony.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        body {
+            font-family: 'SpaceColony', Arial, sans-serif;
+            background-color: #1e1e2f;
+            color: #fff;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        #left-container {
+            margin: 50px;
+            padding: 20px;
+            background-color: #2b2b3c;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        #game-board {
+            width: 600px;
+            height: 600px;
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            grid-template-rows: repeat(10, 1fr);
+            gap: 5px;
+            margin: 50px;
+            padding: 20px;
+            background-color: #2b2b3c;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+
+        .board-cell {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #3b3b4e;
+            color: #fff;
+        }
+
+        .board-cell.question {
+            background-color: red;
+        }
+
+        .player-marker {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: absolute;
+            background-color: #f39c12;
+        }
+
+        #dice-container {
+            margin: 20px 0;
+        }
+
+        #roll-dice {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #f39c12;
+            color: #fff;
+            cursor: pointer;
+        }
+
+        #roll-dice:hover {
+            background-color: #e67e22;
+        }
+
+        #dice-result {
+            margin-top: 10px;
+            font-size: 20px;
+        }
+
+        #game-status {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+
+        #question-box {
+            max-width: 300px;
+            margin: 50px;
+            padding: 20px;
+            background-color: #2b2b3c;
+            border-radius: 15px;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+            text-align: left;
+        }
+
+        #question {
+            font-size: 16px;
+        }
+
+        #answer-options {
+            margin-top: 10px;
+        }
+
+        .answer-option {
+            display: block;
+            margin-top: 5px;
+            padding: 10px;
+            background-color: #3b3b4e;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .answer-option:hover {
+            background-color: #4e4e5e;
+        }
+
+        /* Welcome Modal Styles */
+        #welcome-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #2b2b3c;
+            padding: 30px;
+            width: 80%;
+            max-width: 500px;
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.7);
+            text-align: center;
+            color: #fff;
+            z-index: 1000;
+        }
+
+        #welcome-modal h2 {
+            margin-top: 0;
+        }
+
+        #welcome-modal p {
+            font-size: 16px;
+        }
+
+        #close-modal {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #f39c12;
+            border: none;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #modal-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6);
+            z-index: 999;
+        }
+        @media (max-width:1300px) {
+            .board-cell{
+                /* height: 40px; */
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <div id="left-container">
+        <h1>Interstellar Integrity (i2)™ Electronic Board Game</h1>
+        <p>This electronic board game is in partnership with i2 magazine.</p>
+
+        <div id="dice-container">
+            <button id="roll-dice">Plot Trajectory</button>
+            <div id="dice-result">Booster Level: <span id="result">0</span></div>
+        </div>
+        <div id="game-status">Ready to start!</div>
+    </div>
+
+    <div id="game-board"></div>
+
+    <div id="question-box">
+        <div id="question">No question at the moment.</div>
+        <div id="answer-options"></div>
+    </div>
+
+    <!-- Welcome Modal -->
+    <div id="modal-overlay"></div>
+    <div id="welcome-modal">
+        <h2>Welcome to Interstellar Integrity <a href="https://www.linkedin.com/showcase/interstellar-integrity-i2/" target="_blank" style="color: #f39c12;">(i2)™</a>!</h2>
+        <p>We're thrilled to have you on board. In this game, you'll journey across the stars, answering questions to test your cybersecurity knowledge in space operations.</p>
+        <p>Plot your trajectory to move across the board. Land on a special cell, and you'll get a question. Answer correctly to continue your journey. But watch out! If you answer wrong, you'll return to the start.</p>
+        <p>Are you ready to embark on this interstellar adventure? Let's get started!</p>
+        <button id="close-modal">Start Game</button>
+    </div>
+
+    <!-- Audio for Incorrect Answer -->
+    <audio id="wrong-answer-sound">
+        <source src="https://example.com/wrong-answer.mp3" type="audio/mpeg">
+    </audio>
+
+    <script>
+        // Show welcome modal on page load
+        window.addEventListener('load', () => {
+            document.getElementById('modal-overlay').style.display = 'block';
+            document.getElementById('welcome-modal').style.display = 'block';
+        });
+
+        // Close modal function
+        document.getElementById('close-modal').addEventListener('click', () => {
+            document.getElementById('modal-overlay').style.display = 'none';
+            document.getElementById('welcome-modal').style.display = 'none';
+        });
+
+        // Initialize single player
+        const player = {
+            name: "Player 1",
+            position: 0
+        };
+
+        // Update board and place player marker
+        function updateBoard() {
+            document.querySelectorAll('.player-marker').forEach(marker => marker.remove());
+            const cell = document.getElementById(`cell-${player.position}`);
+            if (cell) {
+                const marker = document.createElement('div');
+                marker.classList.add('player-marker');
+                cell.appendChild(marker);
+            }
+        }
+
+        // List of questions
+        const questions = [
+            {
+                question: "What is the primary purpose of the Cybersecurity Framework (CSF) in commercial satellite operations?",
+                options: ["To manage risks in ground-based infrastructure", "To improve critical infrastructure cybersecurity", "To enhance public access to satellite data", "To promote international space treaties"],
+                answer: "To improve critical infrastructure cybersecurity"
+            },
+            // Additional questions can be added here
+        ];
+
+        // Trigger a question
+        function triggerQuestion() {
+            const randomIndex = Math.floor(Math.random() * questions.length);
+            const questionData = questions[randomIndex];
+            document.getElementById("question").textContent = questionData.question;
+            const answerOptionsDiv = document.getElementById("answer-options");
+            answerOptionsDiv.innerHTML = ""; 
+            questionData.options.forEach(option => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.classList.add("answer-option");
+                button.addEventListener("click", () => checkAnswer(option, questionData.answer));
+                answerOptionsDiv.appendChild(button);
+            });
+        }
+
+        // Check if the answer is correct and play sound if incorrect
+        function checkAnswer(selectedOption, correctAnswer) {
+            const wrongAnswerSound = document.getElementById('wrong-answer-sound');
+            if (selectedOption === correctAnswer) {
+                alert("Correct answer!");
+            } else {
+                alert(`Incorrect answer. The correct answer is: "${correctAnswer}". Returning to start.`);
+                wrongAnswerSound.play();  // Play incorrect answer sound
+                player.position = 0;
+            }
+            document.getElementById("question").textContent = "No question at the moment.";
+            document.getElementById("answer-options").innerHTML = "";
+            updateBoard();
+        }
+
+        // Roll dice and move player
+        document.getElementById("roll-dice").addEventListener("click", () => {
+            const boosterLevel = Math.floor(Math.random() * 6) + 1;
+            document.getElementById("result").textContent = boosterLevel;
+
+            player.position += boosterLevel;
+            if (player.position >= 100) {
+                player.position = 99;
+                alert("Congratulations! You reached the end!");
+            }
+
+            document.getElementById("game-status").textContent = `${player.name} moved to position ${player.position}`;
+            if (player.position % 3 === 0 && player.position !== 0) {
+                triggerQuestion();
+            } else {
+                document.getElementById("question").textContent = "No question at the moment.";
+                document.getElementById("answer-options").innerHTML = "";
+            }
+
+            updateBoard();
+        });
+
+        // Create game board cells
+        const gameBoard = document.getElementById('game-board');
+        const totalCells = 100;
+        for (let i = 0; i < totalCells; i++) {
+            const cell = document.createElement('div');
+            cell.className = 'board-cell';
+            cell.id = `cell-${i}`;
+            if (i % 3 === 0 && i !== 0) {
+                cell.classList.add('question');
+            }
+            gameBoard.appendChild(cell);
+        }
+
+        // Initial board setup
+        updateBoard();
+    </script>
+</body>
+</html>
