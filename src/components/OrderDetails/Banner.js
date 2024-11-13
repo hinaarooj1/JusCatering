@@ -75,6 +75,9 @@ const CuisinePage = ({ cuisineName }) => {
         if (!email) {
             newErrors.email = 'Email is required';
             isValid = false;
+        } else if (!/\S+@\S+\.\S+/.test(email)) {
+            newErrors.email = 'Please enter a valid email address';
+            isValid = false;
         }
 
         if (!numGuests || numGuests < 1) {
