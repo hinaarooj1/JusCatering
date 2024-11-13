@@ -15,6 +15,9 @@ const Header = () => {
 
     return (
         <div className="main-header">
+            <div className="top-bar">
+                Jus Catering cares about your event so please give us 3 - 5 days for order to have the best experience.
+            </div>
             <div className="max-width flex">
                 <div className="left-logo">
                     <Link to="/"><img src={logo} alt="Logo" /></Link>

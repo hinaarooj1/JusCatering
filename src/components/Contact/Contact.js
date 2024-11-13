@@ -2,9 +2,13 @@ import React, { useState } from 'react';
 import './Contact.css'
 import { submitMessageApi } from '../../Api/Service'
 import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 const Contact = () => {
+    let navigate = useNavigate()
+
     const [phoneNumber, setPhoneNumber] = useState('');
     const [isloading, setisloading] = useState(false);
+    const [formSubmitted, setFormSubmitted] = useState(false);
 
     const [message, setMessage] = useState('');
     const [name, setName] = useState("");
@@ -80,6 +84,7 @@ const Contact = () => {
             if (submittedMessage.success) {
 
                 toast.info(submittedMessage.msg);
+                setFormSubmitted(true);
 
             } else {
 
@@ -99,7 +104,15 @@ const Contact = () => {
         // Reset form fields if necessary
 
     };
-
+    if (formSubmitted) {
+        return (
+            <div className="success-message">
+                <h2>Your message has been successfully submitted!</h2>
+                <p>Thank you for reaching out. We’ve received your message and will get back to you as soon as possible.</p>
+                <button onClick={() => navigate("/")}>Back to Home</button>
+            </div>
+        );
+    }
     return (
         <div className="contact-us">
             <section className="contact-hero">

@@ -34,11 +34,11 @@ const Router = () => {
           <Route
             path="/menu/:food"
             element={
-              <RequireAuth loginPath={"/auth/login"}>
-                <OrderDetail />
-              </RequireAuth>
+              <OrderDetail />
             }
           />
+          {/* <RequireAuth loginPath={"/auth/login"}>
+              </RequireAuth> */}
           <Route path="/about" element={<AboutUsPage />} />
           <Route path="/contact" element={<ContactUs />} />
         </Routes>

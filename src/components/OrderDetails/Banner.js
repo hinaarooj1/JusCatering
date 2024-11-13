@@ -14,6 +14,7 @@ import Breakfast from '../../assets/img/breakfast.jpg'
 import { useAuthUser } from 'react-auth-kit';
 import { toast } from 'react-toastify';
 import { submitOrderApi } from '../../Api/Service';
+import { useNavigate, useParams } from 'react-router-dom';
 export const menuData = [
     { id: 1, category: 'Appetizers', image: Appetizer },
     { id: 2, category: 'Salads', image: Salad },
@@ -28,22 +29,29 @@ export const menuData = [
 ];
 
 const CuisinePage = ({ cuisineName }) => {
-
+    let navigate = useNavigate()
+    let food = useParams();
+    console.log('food: ', food);
     let authUser = useAuthUser();
     const [additionalNotes, setAdditionalNotes] = useState('');
     const [isloading, setisloading] = useState(false);
     const [selectedDate, setSelectedDate] = useState('');
     const [numGuests, setNumGuests] = useState(1);
-    const [phoneNumber, setPhoneNumber] = useState(authUser().user.phone);
-    const [name, setName] = useState(authUser().user.firstName + " " + authUser().user.lastName);
-    const [email, setEmail] = useState(authUser().user.email);
+    const [selectedTray, setSelectedTray] = useState(''); // Default is empty or no selection
+    const [formSubmitted, setFormSubmitted] = useState(false);
+    const [phoneNumber, setPhoneNumber] = useState(authUser() ? authUser().user.phone : ''); // Default to empty if no user
+    const [name, setName] = useState(authUser() ? authUser().user.firstName + " " + authUser().user.lastName : ''); // Default to empty if no user
+    const [email, setEmail] = useState(authUser() ? authUser().user.email : ''); // Default to empty if no user
     const [errors, setErrors] = useState({
         phoneNumber: '',
         email: '',
         name: '',
         numGuests: '',
         selectedDate: '',
+        selectedTray: '',
+        selectedCategories: '',
     });
+
 
     // State to track selected categories
     const [selectedCategories, setSelectedCategories] = useState([]);
@@ -51,7 +59,8 @@ const CuisinePage = ({ cuisineName }) => {
         const newErrors = {};
         let isValid = true;
         if (!selectedCategories || selectedCategories === null || selectedCategories <= 0) {
-            toast.error("Please select at least one menu category")
+            newErrors.selectedCategories = 'Please select at least one menu category';
+            isValid = false;
         }
         if (!phoneNumber) {
             newErrors.phoneNumber = 'Phone number is required';
@@ -84,6 +93,10 @@ const CuisinePage = ({ cuisineName }) => {
                 isValid = false;
             }
         }
+        if (!selectedTray) {
+            newErrors.selectedTray = 'Please select a tray size';
+            isValid = false;
+        }
 
         setErrors(newErrors);
         return isValid;
@@ -106,15 +119,19 @@ const CuisinePage = ({ cuisineName }) => {
 
             try {
 
+                let foodData = food.food
+                foodData.toUpperCase()
                 setisloading(true)
                 const formData = {
-                    name: authUser().user.firstName + " " + authUser().user.lastName,
+                    food: foodData,
+                    name: name,
                     selectedCategories,
                     additionalNotes,
                     selectedDate,
                     numGuests,
                     phoneNumber,
                     email,
+                    traySize: selectedTray
                 };
 
 
@@ -122,7 +139,7 @@ const CuisinePage = ({ cuisineName }) => {
                 if (submittedMessage.success) {
 
                     toast.info(submittedMessage.msg);
-
+                    setFormSubmitted(true);
                 } else {
 
                     toast.error(submittedMessage.msg);
@@ -153,10 +170,37 @@ const CuisinePage = ({ cuisineName }) => {
                 : [...prevSelected, category]
         );
     };
+    if (formSubmitted) {
+        return (
+            <div className="success-message">
+                <h2>Your Order Has Been Successfully Submitted!</h2>
+                <p>Thank you for your order. We will get in touch with you shortly.</p>
+                <button onClick={() => navigate("/")}>Back to Home</button>
+            </div>
+        );
+    }
     return (
         <div className="cuisine-page">
+
             <h1>{cuisineName} Cuisine Menu</h1>
+            <p className="menu-heading" style={{ fontSize: "18px" }}>Select Your <span style={{ textTransform: "capitalize", fontWeight: "bold" }}>{food.food}</span> Cuisine Menu</p>
             <div className="menu-grid">
+                {menuData.map((item) => (
+                    <div key={item.id} className="menu-category">
+                        <label className="menu-checkbox">
+                            <input
+                                type="checkbox"
+                                checked={selectedCategories.includes(item.category)}
+                                onChange={() => toggleCategorySelection(item.category)}
+                            />
+                            {item.category}
+                        </label>
+                    </div>
+                ))}
+
+            </div>
+            {errors.selectedCategories && <div className="error-message">{errors.selectedCategories}</div>}
+            {/* <div className="menu-grid">
                 {menuData.map((item) => (
                     <div
                         key={item.id}
@@ -170,7 +214,7 @@ const CuisinePage = ({ cuisineName }) => {
                         <label> {selectedCategories.includes(item.category) ? <i className="fa-solid fa-check"></i> : ""} Select {item.category}</label>
                     </div>
                 ))}
-            </div>
+            </div> */}
             {/* Additional Form Fields */}
             <div className="form-fields">
                 <label>
@@ -178,10 +222,9 @@ const CuisinePage = ({ cuisineName }) => {
                     <input
                         type="email"
 
-                        value={authUser().user.firstName + " " + authUser().user.lastName}
-                        readOnly
-                        style={{ opacity: "0.5" }}
-                        onChange={(e) => setEmail(e.target.value)}
+                        value={name}
+
+                        onChange={(e) => setName(e.target.value)}
                         placeholder="Enter your name"
                     />
                     {errors.name && <div className="error-message">{errors.name}</div>}
@@ -191,9 +234,8 @@ const CuisinePage = ({ cuisineName }) => {
                     Email:
                     <input
                         type="email"
-                        value={authUser().user.email}
-                        readOnly
-                        style={{ opacity: "0.5" }}
+                        value={email}
+
                         onChange={(e) => setEmail(e.target.value)}
                         placeholder="Enter your email"
                     />
@@ -225,7 +267,7 @@ const CuisinePage = ({ cuisineName }) => {
                     {errors.numGuests && <div className="error-message">{errors.numGuests}</div>}
                 </label>
                 <label>
-                    Select Date:
+                    Select Date of event:
                     <input
                         type="date"
                         value={selectedDate}
@@ -243,7 +285,30 @@ const CuisinePage = ({ cuisineName }) => {
                     />
                 </label>
 
-
+                <div className="tray-selection">
+                    <h3>Select Tray Size</h3>
+                    <label className="tray-option">
+                        <input
+                            type="radio"
+                            name="traySize"
+                            value="Full Tray"
+                            checked={selectedTray === "Full Tray"}
+                            onChange={() => setSelectedTray("Full Tray")}
+                        />
+                        <p>Full Tray</p>
+                    </label>
+                    <label className="tray-option">
+                        <input
+                            type="radio"
+                            name="traySize"
+                            value="Half Tray"
+                            checked={selectedTray === "Half Tray"}
+                            onChange={() => setSelectedTray("Half Tray")}
+                        />
+                        <p>Half Tray</p>
+                    </label>
+                    {errors.selectedTray && <div className="error-message">{errors.selectedTray}</div>}
+                </div>
 
 
             </div>

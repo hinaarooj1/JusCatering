@@ -96,6 +96,17 @@
     max-height: 100vh;
 }
 
+.top-bar {
+    text-align: center;
+    background-color: #59ada1;
+    padding-block: 10px;
+    padding-inline: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+}
+
 @media (max-width: 768px) {
     .right-links {
         display: none;

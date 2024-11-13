@@ -372,36 +372,71 @@ exports.logoutUser = catchAsyncErrors(async (req, res, next) => {
 });
 exports.submitOrder = catchAsyncErrors(async (req, res, next) => {
 
-  let { name, email, phoneNumber, selectedCategories, additionalNotes, selectedDate, numGuests } = req.body;
+  let { food, name, email, phoneNumber, selectedCategories, additionalNotes, selectedDate, numGuests, traySize } = req.body;
+  console.log('req.body: ', req.body);
   if (!selectedCategories || selectedCategories.length === 0) {
     return res.status(400).send({
       success: false,
       msg: "Please select at least one category for the catering order.",
     });
   }
+  let capitalizedFood = food ? food.charAt(0).toUpperCase() + food.slice(1) : "No food selection provided";
   let subject = `Jus Catering Menu Order Details`;
 
   // Construct the email content
   let text = `
-  Dear Jus Catering Team,
+  <html>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px;">
+      <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="text-align: center; color: #4CAF50;">New Catering Order</h2>
+        
+        <p>Dear Jus Catering Team,</p>
+        
+        <p>You have received a new catering order. Below are the details:</p>
 
-  You have received a new catering order. Below are the details:
+        <p><strong>This order is for: </strong><span style="color: #4CAF50; text-transform: capitalize;">${capitalizedFood} Food</span></p>
 
-  **Customer Name:** ${name}
-  **Email Address:** ${email}
-  **Phone Number:** ${phoneNumber}
-  
-  **Number of Guests:** ${numGuests}
-  **Selected Date:** ${selectedDate}
+        <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1; width: 50%;"><strong>Customer Name:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Email Address:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Phone Number:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${phoneNumber}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Number of Guests:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${numGuests}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Selected Date:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${selectedDate}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Selected Categories:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${selectedCategories.length > 0 ? selectedCategories.join(", ") : "No categories selected"}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Selected Tray Size:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${traySize}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Additional Notes:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${additionalNotes ? additionalNotes : "No additional notes provided"}</td>
+          </tr>
+        </table>
+        
+      
+      </div>
+    </body>
+  </html>
+`;
 
-  **Selected Categories:** 
-  ${selectedCategories.length > 0 ? selectedCategories.join(", ") : "No categories selected"}
-
-  **Additional Notes:**
-  ${additionalNotes ? additionalNotes : "No additional notes provided"}
-
-   
-  `;
   let sendingEmail = process.env.USER
   // Send the email
   let sendEmailError = await sendEmail(sendingEmail, subject, text);
@@ -437,18 +472,44 @@ exports.submitMessage = catchAsyncErrors(async (req, res, next) => {
 
   // Construct the email content
   let text = `
-  Dear Jus Catering Team,
-
-  You have received a new contact form. Below are the details:
-
-  **Name:** ${name}
-  **Email Address:** ${email}
-  **Phone Number:** ${phone}
+  <html>
+    <body style="font-family: Arial, sans-serif; background-color: #f4f4f9; padding: 20px;">
+      <div style="max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);">
+        <h2 style="text-align: center; color: #4CAF50;">New Contact Form Submission</h2>
   
-  **Message:** ${message}
-   
- 
+        <p>Dear Jus Catering Team,</p>
+  
+        <p>You have received a new contact form. Below are the details:</p>
+  
+        <table style="width: 100%; margin-top: 20px; border-collapse: collapse;">
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1; width: 50%;"><strong>Name:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${name}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Email Address:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${email}</td>
+          </tr>
+          <tr>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;"><strong>Phone Number:</strong></td>
+            <td style="padding: 10px; border-bottom: 1px solid #f1f1f1;">${phone}</td>
+          </tr>
+            <tr>
+          <!-- "Message" label on one line -->
+          <td style="padding: 10px; border-bottom: 1px solid #f1f1f1; vertical-align: top; width: 100%;"><strong>Message:</strong></td>
+        </tr>
+        <tr>
+          <!-- Message text on next line -->
+          <td style="padding: 10px; border-bottom: 1px solid #f1f1f1; width: 100%;">${message}</td>
+        </tr>
+        </table>
+  
+       
+      </div>
+    </body>
+  </html>
   `;
+
   let sendingEmail = process.env.USER
   // Send the email
   let sendEmailError = await sendEmail(sendingEmail, subject, text);
