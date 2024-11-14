@@ -41,7 +41,7 @@ const Header = () => {
                                 <li><Link to="/menu/caribbean">Caribbean</Link></li>
                                 <li><Link to="/menu/french">French</Link></li>
                                 <li><Link to="/menu/italian">Italian</Link></li>
-                                <li><Link to="/menu/japanese">Japanese</Link></li>
+                                <li><Link to="/menu/english">English</Link></li>
                                 <li><Link to="/menu/mediterranean">Mediterranean</Link></li>
                             </ul>
                         </li>

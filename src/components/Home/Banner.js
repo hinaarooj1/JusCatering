@@ -1,6 +1,7 @@
 import African from '../../assets/img/african-new.jpg';
 import American from '../../assets/img/american-new.jpg';
-import Asian from '../../assets/img/asian.jpg';
+import Asian from '../../assets/img/asian-new.jpg';
+import English from '../../assets/img/English-new.jpg';
 import Caribbean from '../../assets/img/Caribbean-new.jpg';
 import French from '../../assets/img/French-new.jpg';
 import Italian from '../../assets/img/italian-new.jpg';
@@ -55,11 +56,11 @@ const Banner = () => {
                         <p>The heart of Italian cuisine</p>
                     </div>
                 </Link>
-                <Link to="/menu/japanese" className="tile">
-                    <img src={Japanese} alt="Japanese Cuisine" />
+                <Link to="/menu/english" className="tile">
+                    <img src={English} alt="English Cuisine" />
                     <div className="overlay">
-                        <h2>Japanese</h2>
-                        <p>Experience Japanese delicacies</p>
+                        <h2>English</h2>
+                        <p>Experience English delicacies</p>
                     </div>
                 </Link>
                 <Link to="/menu/mediterranean" className="tile">
