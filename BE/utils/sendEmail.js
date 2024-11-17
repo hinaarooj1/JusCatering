@@ -17,7 +17,7 @@ module.exports = async (email, subject, text) => {
       from: "orderjuscatering@gmail.com",
       to: email,
       subject: subject,
-      text: text,
+      html: text,
     });
     console.log("email sent successfully", transporter, data);
     return null;
