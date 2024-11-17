@@ -4,7 +4,7 @@ const {
   loginUser,
   logoutUser,
   resetPassword,
-  allUser,
+
   singleUser,
   updateSingleUser,
   verifySingleUser,
@@ -34,7 +34,7 @@ let router = express.Router();
 router.route("/register").post(RegisterUser);
 router.route("/login").post(loginUser);
 router.route("/logout").get(logoutUser);
-router.route("/allUser").get(allUser);
+// router.route("/allUser").get(allUser);
 router.route("/submitOrder").post(submitOrder);
 router.route("/submitMessage").post(submitMessage);
 router.route("/singleUser/:id").get(singleUser);
