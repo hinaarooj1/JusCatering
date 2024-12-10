@@ -1,12 +1,12 @@
-import African from '../../assets/img/african-new.jpg';
-import American from '../../assets/img/american-new.jpg';
-import Asian from '../../assets/img/asian-new.jpg';
-import English from '../../assets/img/English-new.jpg';
-import Caribbean from '../../assets/img/Caribbean-new.jpg';
-import French from '../../assets/img/French-new.jpg';
-import Italian from '../../assets/img/italian-new.jpg';
+import African from '../../assets/img/new/1.png';
+import American from '../../assets/img/new/2-1.png';
+import Asian from '../../assets/img/new/3.png';
+import English from '../../assets/img/new/7.png';
+import Caribbean from '../../assets/img/new/4.png';
+import French from '../../assets/img/new/5.png';
+import Italian from '../../assets/img/new/6.png';
 import Japanese from '../../assets/img/Japanese.jpg';
-import Mediterranean from '../../assets/img/Mediterranean-new.jpg';
+import Mediterranean from '../../assets/img/new/8.png';
 import React from 'react';
 import './Banner.css'
 import { Link } from 'react-router-dom';

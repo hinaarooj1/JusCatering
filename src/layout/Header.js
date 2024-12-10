@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../assets/img/logo.png';
+import logo from '../assets/img/new/3-2.png';
 import './Header.css';
 import { useAuthUser } from "react-auth-kit";
 

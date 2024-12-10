@@ -11,6 +11,11 @@
     max-width: 300px;
 }
 
+.logo-footer img {
+    width: 120px;
+    padding-block: 10px;
+}
+
 @media (max-width:768px) {
     .flex.jus {
         flex-direction: column;
